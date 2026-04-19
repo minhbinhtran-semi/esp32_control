@@ -1,18 +1,36 @@
 #include <Arduino.h>
+#include "mpu6050.h"
+#include "espnow_sender.h"
 
-// put function declarations here:
-int myFunction(int, int);
+float gocX = 0, gocY = 0, tocDoXoayZ = 0;
+String lastCmd = "";
+unsigned long lastSendTime = 0;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+  delay(1000);
+  
+  initMPU6050();
+  initESPNowSender();
+  
+  Serial.println("✅ TAY ĐIỀU KHIỂN ĐÃ SẴN SÀNG (ESP-NOW)!");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  readMPU6050(gocX, gocY, tocDoXoayZ);
+  String cmd = getCommand(gocX, gocY, tocDoXoayZ);
+  
+  // Gửi lệnh mỗi 20ms (50Hz)
+  if (millis() - lastSendTime >= 20) {
+    sendCommand(cmd);
+    lastSendTime = millis();
+  }
+  
+  if (cmd != lastCmd) {
+    lastCmd = cmd;
+    Serial.print("📤 Lệnh: ");
+    Serial.println(cmd);
+  }
+  
+  delay(10);
 }
