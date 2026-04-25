@@ -10,7 +10,7 @@ void initMPU6050() {
   
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(0x1B);
-  Wire.write(0x08); // Gyro scale: 500 deg/s
+  Wire.write(0x08);  // Gyro scale: 500 deg/s
   Wire.endTransmission(true);
 }
 
@@ -25,7 +25,7 @@ void readMPU6050(float &gocX, float &gocY, float &tocDoXoayZ) {
     int16_t ay = Wire.read() << 8 | Wire.read();
     int16_t az = Wire.read() << 8 | Wire.read();
     
-    Wire.read(); Wire.read();
+    Wire.read(); Wire.read();  // Bỏ qua nhiệt độ
     
     int16_t gx = Wire.read() << 8 | Wire.read();
     int16_t gy = Wire.read() << 8 | Wire.read();

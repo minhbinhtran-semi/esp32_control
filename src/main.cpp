@@ -8,12 +8,12 @@ unsigned long lastSendTime = 0;
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(2000);
   
   initMPU6050();
   initESPNowSender();
   
-  Serial.println("✅ TAY ĐIỀU KHIỂN ĐÃ SẴN SÀNG (ESP-NOW)!");
+  Serial.println("✅ TAY ĐIỀU KHIỂN ESP32-C3 ĐÃ SẴN SÀNG!");
 }
 
 void loop() {
@@ -26,6 +26,7 @@ void loop() {
     lastSendTime = millis();
   }
   
+  // Chỉ in ra Serial khi lệnh thay đổi
   if (cmd != lastCmd) {
     lastCmd = cmd;
     Serial.print("📤 Lệnh: ");

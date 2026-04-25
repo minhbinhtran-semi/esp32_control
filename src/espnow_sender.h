@@ -5,12 +5,10 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-// Cấu trúc dữ liệu gửi
 typedef struct {
-  char command[10];
+  char cmd[10];
 } DataSend;
 
-// ❗ QUAN TRỌNG: Thay MAC bằng MAC của ESP32 trên XE
 extern uint8_t receiverMac[];
 
 void initESPNowSender();
